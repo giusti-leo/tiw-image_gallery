@@ -1,7 +1,5 @@
 package projects.beans;
 
-import java.sql.Date;
-
 public class Comment {
 
 	private User user = null;

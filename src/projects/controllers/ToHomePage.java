@@ -53,7 +53,6 @@ public class ToHomePage extends HttpServlet {
 			response.sendRedirect(loginpath);
 			return;
 		}
-		User user = (User) session.getAttribute("user");
 		AlbumDAO albumsDAO = new AlbumDAO(connection);
 		List<Album> albums = new ArrayList<Album>();
 

@@ -20,11 +20,10 @@
 	</tr> 
 	<tr>
 	</c:forEach>
-	
+	<tr>
 	<c:if test="${pageno  != 1}" > 
 		<td> <a href="GetImages?albumid=${albumid}&${pageno +1}"> NEXT </a> </td>
 		</c:if>
-	</tr> 
 	<tr>	
 	<c:if test ="${numberofpages lt pageno}" > 
 		<td> <a href="GetImages?albumid=${albumid}&${pageno -1}"> BACK </a> </td>
