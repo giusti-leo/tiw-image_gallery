@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>HomePage</title>
+   <link rel="stylesheet" type="text/css" media="all"
+          href="../css/mystyle.css" th:href="@{/css/mystyle.css}"/>
+</head>
+<body>
+<div align="right">
+    <a th:href="@{/Logout}">Logout</a>
+</div>
+<h1>Welcome to the Gallery Home Page</h1>
+<p th:text="${'Welcome back ' + session.user.name + ' ' + session.user.surname}"></p>
+
+<table>
+    <thead>
+    	<tr>
+        <th>Title</th>
+        <th>Date</th>
+    	</tr>
+    </thead>
+    <tbody>
+		<tr th:each="a : ${albums}" >
+        <td th:text="${a.title}"></td>
+        <td th:text="${a.date}"></td>
+        <td><a th:href="@{/GetImages(albumid=${a.id},pageno=1)}">Show</a></td>
+    	</tr>
+    </tbody>
+</table>
+
+</body>
+</html>
