@@ -87,11 +87,11 @@ public class CommentDAO {
 	public void createComment(int userId, int imageId, String text)
 			throws SQLException {
 
-		String query = "INSERT into comment (user_id, image_id, text) VALUES(?, ?, ?)";
+		String query = "INSERT into comment (id,user_id, image_id, text) VALUES(NULL,?,?,?)";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setInt(1, userId);
-			pstatement.setInt(2, imageId);
-			pstatement.setString(3, text);
+			pstatement.setInt(2, userId);
+			pstatement.setInt(3, imageId);
+			pstatement.setString(4, text);
 			pstatement.executeUpdate();
 		}
 	}

@@ -7,6 +7,7 @@ public class Comment {
 	private User user = null;
 	private Image image = null;
 	private String comment;
+	private Integer id = null;
 
 	public String getComment() {
 		return comment;
@@ -30,6 +31,14 @@ public class Comment {
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }

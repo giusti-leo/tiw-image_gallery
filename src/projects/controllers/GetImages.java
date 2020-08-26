@@ -60,7 +60,7 @@ public class GetImages extends HttpServlet {
 		int numberOfPages = 0;
 
 		// If the user is not logged in (not present in session) redirect to the login
-		String loginpath = getServletContext().getContextPath() + "/index.html";
+		String loginpath = getServletContext()+ "/index.html";
 		HttpSession session = request.getSession();
 		if (session.isNew() || session.getAttribute("user") == null) {
 			response.sendRedirect(loginpath);
@@ -102,7 +102,7 @@ public class GetImages extends HttpServlet {
 		request.setAttribute("pageno", pageNumber);
 		request.setAttribute("numberofpages", numberOfPages);
 		
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("ImagesPagination.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/ImagesPagination.jsp");
 		requestDispatcher.forward(request,response);
 		
 	}

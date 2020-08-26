@@ -38,7 +38,6 @@ public class GetComments extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Connection connection = null;
 	private TemplateEngine templateEngine;
-	//private int index = 1;
 
 	public GetComments() {
 		super();
@@ -59,7 +58,7 @@ public class GetComments extends HttpServlet {
 			throws ServletException, IOException {
 		
 		// If the user is not logged in (not present in session) redirect to the login
-		String loginpath = getServletContext().getContextPath() + "/index.html";
+		String loginpath = getServletContext() + "/index.html";
 		HttpSession session = request.getSession();
 		
 		if (session.isNew() || session.getAttribute("user") == null) {
@@ -96,7 +95,6 @@ public class GetComments extends HttpServlet {
 		try {
 			image = imagesDAO.findImageById(imageId);
 			comments = commentDAO.findCommetsByImageId(imageId);
-			user = userDAO.findUserBy
 			if (image == null ) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 				return;
@@ -106,47 +104,11 @@ public class GetComments extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to recover missions");
 			return;
 		}
-		try {
-			//response.setCharacterEncoding(charset);
-		PrintWriter pw = response.getWriter();
 		
-		pw.println("<center><table border=5>");
-		pw.println("<tr>");
-		pw.println("<b>");
-		pw.println("<th>Title</th><th>Directory</th><th>Image</th><th>Date</th>");
-		pw.println("</b>");
-		pw.println("</tr>");
-		pw.println("<tr><td> " + image.getTitle() + "</td><td>" + image.getDirectory() + "</td><td><img src=\"" + image.getDirectory() + "\"></td><td>"+ image.getDate() +"</td></tr>");
-		pw.println("</table>");
-
-		// find total number of records in table store it in total number of
-		// records variable
-		
-		pw.println("<center><table border=5>");
-		pw.println("<tr>");
-		pw.println("<b>");
-		pw.println("<th>Name</th><th>Surname</th><th>Text</th>");
-		pw.println("</b>");
-		pw.println("</tr>");
-		comments.keySet().forEach(k ->{ pw.println("<tr><td>" + comments.get(k).getName() + "</td><td>" + k.getComment()  +"</td><td></tr>");}); 
-		pw.println("</table>");
-
-		
-		//inserimento commento
-		
-		pw.close();
-		
-		
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
+		request.getSession().setAttribute("user", user);
 		request.setAttribute("image", image);
 		request.setAttribute("listofcomments", comments);
-		request.setAttribute("user", numberOfPages);
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("CommentsPagination.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/AlbumPage.jsp");
 		requestDispatcher.forward(request,response);
 		
 	}

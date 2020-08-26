@@ -1,52 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-pageEncoding="ISO-8859-1"%> <%@ taglib
-uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    pageEncoding="ISO-8859-1"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Images</title>
+<title>Images </title>
 </head>
 <body>
 	<table>
-		<tr>
-			<th>Title</th>
-			<th>Image</th>
-			<th>Date</th>
-			<th>Directory</th>
-		</tr>
-		<c:forEach var="image" items="${images}">
-			<tr>
-				<td> ${image.title } </td>
-				<td> <img src="<c:url value=" ${image.image}"/>" > </td>
-				<td> ${image.date } </td>
-				<td>${image.directory }</td>
-			</tr>
-		</c:forEach>
-	</table>
+	<tr> 
+	<th>Thumbnails </th> 
+	<th>Title </th>
+	</tr>
+	<c:forEach var="image" items="\${images}" > 
+	<tr>
+	<td> <a href="GetComments?imageid=${image.id}" > <img src=" <c:url value="${image.image}" />" width="400" height="200" > </a> </td>
+	<td> ${image.title } </td>
+	</tr> 
+	<tr>
+	</c:forEach>
 	
-	<table> 
-		<c:forEach var="entry" items="${comments.map}"> 
-			<tr>
-				<td>
-					<c:out value="${entry.value.name} ${entry.value.surname}"/> 
-				</td>
-				<td>
-					<c:out value="${entry.key.text}"/>
-				</td>
-			</tr> 
-		</c:forEach> 
+	<c:if test="${pageno  != 1}" > 
+		<td> <a href="GetImages?albumid=${albumid}&${pageno +1}"> NEXT </a> </td>
+		</c:if>
+	</tr> 
+	<tr>	
+	<c:if test ="${numberofpages lt pageno}" > 
+		<td> <a href="GetImages?albumid=${albumid}&${pageno -1}"> BACK </a> </td>
+		</c:if>
+		</tr> 
+	<tr>
+	<td> 
+	<a href="../WEB-INF/HomePage.html" > Back to Home Page  </a> 
+	</td>	
 	</table>
-
-<div>
-	<form  action="#" th:action="@{/CreateComment}" method="POST">
-			<fieldset>
-				<p>Insert comment: <input type="number" step="0.0001" name="food" min=0 required/></p>
-				<input type="submit" name="text" th:value="${user.id}">
-			</fieldset>
-	</form>
-</div>
-<h1><a href="../WEB-INF/HomePage.html"> Back to Home Page </h1>
-
 </body>
 </html>
+

@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,16 +18,16 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import projects.beans.User;
-import projects.dao.MissionsDAO;
+import projects.dao.CommentDAO;
 import projects.utils.ConnectionHandler;
 
-@WebServlet("/CreateMission")
-public class CreateMission extends HttpServlet {
+@WebServlet("/CreateComment")
+public class CreateComment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private Connection connection = null;
 
-	public CreateMission() {
+	public CreateComment() {
 		super();
 	}
 
@@ -34,35 +35,28 @@ public class CreateMission extends HttpServlet {
 		connection = ConnectionHandler.getConnection(getServletContext());
 	}
 
-	private Date getMeYesterday() {
-		return new Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000);
-	}
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// If the user is not logged in (not present in session) redirect to the login
 		HttpSession session = request.getSession();
 		if (session.isNew() || session.getAttribute("user") == null) {
-			String loginpath = getServletContext().getContextPath() + "/index.html";
+			String loginpath = getServletContext() + "/index.html";
 			response.sendRedirect(loginpath);
 			return;
 		}
 
 		// Get and parse all parameters from request
 		boolean isBadRequest = false;
-		Date startDate = null;
-		String destination = null;
-		String description = null;
-		Integer days = null;
+		String text = null;
+		Integer imageId = null;
+		User user = null;
+		CommentDAO commentDAO = new CommentDAO(connection);
 		try {
-			days = Integer.parseInt(request.getParameter("days"));
-			destination = StringEscapeUtils.escapeJava(request.getParameter("destination"));
-			description = StringEscapeUtils.escapeJava(request.getParameter("description"));
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			startDate = (Date) sdf.parse(request.getParameter("date"));
-			isBadRequest = days <= 0 || destination.isEmpty() || description.isEmpty()
-					|| getMeYesterday().after(startDate);
-		} catch (NumberFormatException | NullPointerException | ParseException e) {
+			text = StringEscapeUtils.escapeJava(request.getParameter("text"));
+			imageId = Integer.parseInt(request.getParameter("imageid"));
+			user = (User) session.getAttribute("user");
+			isBadRequest = text.isEmpty();
+		} catch (NumberFormatException | NullPointerException e) {
 			isBadRequest = true;
 			e.printStackTrace();
 		}
@@ -72,19 +66,17 @@ public class CreateMission extends HttpServlet {
 		}
 
 		// Create mission in DB
-		User user = (User) session.getAttribute("user");
-		MissionsDAO missionsDAO = new MissionsDAO(connection);
 		try {
-			missionsDAO.createMission(startDate, days, destination, description, user.getId());
+			commentDAO.createComment(user.getId(), imageId, text);
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create mission");
 			return;
 		}
 
-		// return the user to the right view
-		String ctxpath = getServletContext().getContextPath();
-		String path = ctxpath + "/Home";
-		response.sendRedirect(path);
+		request.setAttribute("imageid", imageId);
+		GetComments getComment= new GetComments();
+		getComment.doGet(request,response);
+		
 	}
 
 	public void destroy() {
