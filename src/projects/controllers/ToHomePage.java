@@ -20,7 +20,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import projects.beans.Album;
-import projects.beans.User;
 import projects.dao.AlbumDAO;
 import projects.utils.ConnectionHandler;
 

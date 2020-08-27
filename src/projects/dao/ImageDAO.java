@@ -62,8 +62,6 @@ public class ImageDAO {
 	}
 	
 	public int countImages(int albumId) throws SQLException{
-		int value;
-
 		String query = "select count(*) from order where ? = order.album_id";
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			pstatement.setInt(1, albumId);

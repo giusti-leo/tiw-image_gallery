@@ -1,7 +1,5 @@
 package projects.beans;
 
-import java.sql.Date;
-
 public class Order {
 	private int id;
 	Album album;

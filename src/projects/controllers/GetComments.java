@@ -1,13 +1,9 @@
 package projects.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -19,18 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import projects.beans.Album;
 import projects.beans.Comment;
 import projects.beans.Image;
 import projects.beans.User;
-import projects.dao.AlbumDAO;
 import projects.dao.CommentDAO;
 import projects.dao.ImageDAO;
-import projects.dao.UserDAO;
 import projects.utils.ConnectionHandler;
 
 @WebServlet("/GetComments")
@@ -85,7 +77,6 @@ public class GetComments extends HttpServlet {
 		Image image = new Image();
 		
 		//'user' is used to redirect someone
-		UserDAO userDAO = new UserDAO(connection); 
 		User user = new User();
 		
 		//'comments' is used to show comments

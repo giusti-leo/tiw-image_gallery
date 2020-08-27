@@ -19,7 +19,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import projects.beans.Image;
-import projects.dao.CommentDAO;
 import projects.dao.ImageDAO;
 import projects.utils.ConnectionHandler;
 

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 import projects.beans.Comment;
-import projects.beans.Image;
+//import projects.beans.Image;
 import projects.beans.User;
 
 public class CommentDAO {
@@ -39,6 +39,7 @@ public class CommentDAO {
 		return comments;
 	}
 	
+	/*
 	private User findUserById(int id) throws SQLException {
 		User user = null;
 
@@ -77,7 +78,7 @@ public class CommentDAO {
 		}
 		return image;
 	}
-
+	*/
 	
 
 	public void createComment(int userId, int imageId, String text)
