@@ -22,12 +22,11 @@ CREATE TABLE `user` (
   `password` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+ENGINE=InnoDB AUTO_INCREMENT=300 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'leonardo','giusti','leonardo.giusti','leo123'),(2,'luca','giudici','luca.giudici','luca1998'),(3,'davide','guerra','davide.guerra','dado98'),(4,'karl','klay','karl.klay','karllrak');
+INSERT INTO `user` VALUES (301,'leonardo','giusti','leonardo.giusti','leo123'),(302,'luca','giudici','luca.giudici','luca1998'),(303,'davide','guerra','davide.guerra','dado98'),(304,'karl','klay','karl.klay','karllrak'), (305,'anon','cogn','a','a');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -39,9 +38,9 @@ CREATE TABLE `album` (
   `title` VARCHAR(255) NOT NULL,
   `date` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id` ) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+  UNIQUE KEY `id_UNIQUE` (`id` ) 
+  )
+ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `album` WRITE;
 /*!40000 ALTER TABLE `album` DISABLE KEYS */;
@@ -59,18 +58,14 @@ CREATE TABLE `image` (
   `date` datetime NOT NULL,
   `image` LONGBLOB ,
   PRIMARY KEY (`id`),
-  CONSTRAINT `id`
-    FOREIGN KEY (`id`)
-    REFERENCES `album` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+  CONSTRAINT `id` FOREIGN KEY (`id`) REFERENCES `album` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION 
+  )
+ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 LOCK TABLES `image` WRITE;
 /*!40000 ALTER TABLE `image` DISABLE KEYS */;
-INSERT INTO `image` VALUES (1,'koala','one text','C:/Users/leona/git/tiw-image_gallery/images','2020-06-21 20:14:08', load_file('C:/Users/leona/git/tiw-image_gallery/images/koala.jpg')), (2,'leone','one text','C:/Users/leona/git/tiw-image_gallery/images','2020-06-21 20:14:08',LOAD_FILE('C:/Users/leona/git/tiw-image_gallery/images/leone.jpg'));
+INSERT INTO `image` VALUES (201,'koala','one text','C:/Users/leona/git/tiw-image_gallery/images','2020-06-21 20:14:08', load_file('C:/Users/leona/git/tiw-image_gallery/images/koala.jpg')), (202,'leone','one text','C:/Users/leona/git/tiw-image_gallery/images','2020-06-21 20:14:08',LOAD_FILE('C:/Users/leona/git/tiw-image_gallery/images/leone.jpg'));
 /*!40000 ALTER TABLE `image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,49 +77,32 @@ CREATE TABLE `comment` (
   `image_id` INT(11) NOT NULL,
   `text` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `userid`
-    FOREIGN KEY (`userid`)
-    REFERENCES `user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `image_id`
-    FOREIGN KEY (`image_id`)
-    REFERENCES `image` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+  CONSTRAINT `userid` FOREIGN KEY (`userid`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `image_id` FOREIGN KEY (`image_id`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  )
+ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (1,1,1,'Primo'),(2,2,1,'Nice pic'),(3,1,1,'bellaaa');
+INSERT INTO `comment` VALUES (100,1,1,'Primo'),(101,2,1,'Nice pic'),(103,1,1,'bellaaa');
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `order`;
 
-CREATE TABLE IF NOT EXISTS `order` (
-  `user_id` INT(11) NOT NULL,
-  `album_id` INT(11) NOT NULL,
-  `identifier` INT(11) NOT NULL,
-  PRIMARY KEY (`user_id`, `album_id`),
-  CONSTRAINT `user_id`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `album_id`
-    FOREIGN KEY (`album_id`)
-    REFERENCES `album` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+CREATE TABLE IF NOT EXISTS `containment` (
+  `albumid` INT(11) NOT NULL,
+  `imageid` INT(11) NOT NULL,
+  PRIMARY KEY (`album`, `imageid`),
+  CONSTRAINT `imageid` FOREIGN KEY (`imageid`) REFERENCES `image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `albumid` FOREIGN KEY (`albumid`) REFERENCES `album` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  )
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-LOCK TABLES `order` WRITE;
-/*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES (1,1,1),(1,2,2),(1,3,3),(1,4,4),(2,1,1),(2,2,2),(2,3,3),(2,4,4),(2,5,5),(3,1,1),(3,2,2),(3,3,3),(3,4,4),(3,5,5),(4,1,1),(4,2,2),(4,3,3),(4,4,4),(4,5,5);
-/*!40000 ALTER TABLE `order` ENABLE KEYS */;
+LOCK TABLES `containment` WRITE;
+/*!40000 ALTER TABLE `containment` DISABLE KEYS */;
+INSERT INTO `containment` VALUES (1,201),(1,202),(5,202);
+/*!40000 ALTER TABLE `containment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 SET SQL_MODE=@OLD_SQL_MODE;

@@ -3,6 +3,7 @@ package projects.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -17,7 +18,9 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import projects.beans.Album;
 import projects.beans.User;
+import projects.dao.AlbumDAO;
 import projects.dao.UserDAO;
 import projects.utils.ConnectionHandler;
 
@@ -58,8 +61,11 @@ public class CheckLogin extends HttpServlet {
 		// query db to authenticate for user
 		UserDAO userDao = new UserDAO(connection);
 		User user = null;
+		ArrayList<Album> albums = null;
+		AlbumDAO albumDAO = new AlbumDAO(connection);
 		try {
 			user = userDao.checkCredentials(usrn, pwd);
+			albums = albumDAO.findAlbum();
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to check credentials");
 			return;
@@ -80,9 +86,21 @@ public class CheckLogin extends HttpServlet {
 			path = "/index.html";
 			templateEngine.process(path, ctx, response.getWriter());
 		} else {
+			//request.getSession().setAttribute("user", user);
+			//System.out.println("ServletContext: "+ getServletContext());
+			//System.out.println("getServletContext().getContextPath(): "+ getServletContext().getContextPath());
+			
+			//path = getServletContext().getContextPath() + "tiw-image_gallery/WEB-INF/HomePage.html";
+			//path = "HomePage.html";
+			//System.out.println("PATH: "+path);
+			//response.sendRedirect(path);
+			
+			String path1 = "/WEB-INF/HomePage.html";
 			request.getSession().setAttribute("user", user);
-			path = getServletContext().getContextPath() + "/HomePage";
-			response.sendRedirect(path);
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("albums", albums);
+			templateEngine.process(path1, ctx, response.getWriter());
 		}
 
 	}

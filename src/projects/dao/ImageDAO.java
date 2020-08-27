@@ -40,29 +40,40 @@ public class ImageDAO {
 	
 	public ArrayList<Image> findImagesByAlbumId(int albumId, int startIndex,int recordPerPage) throws SQLException {
 
+		/*"SELECT transactionId, date, amount, originId, A1.username, " +
+                "destinationId, A2.username, description " +
+                "FROM transaction " +
+                "JOIN account A1 ON originId = A1.accountId " +
+                "JOIN account A2 ON destinationId = A2.accountId " +
+                "WHERE originId = ? OR destinationId = ? ORDER BY date DESC"*/
+		
 		ArrayList<Image> images = new ArrayList<Image>();
 		
-		String query = "SELECT image.* FROM image, order WHERE image.id = order.id_album AND order.album_id = ? LIMIT "+ (startIndex) + "," + (recordPerPage);
+		String query = "SELECT id, title, text, directory, date, image FROM image JOIN containment A1 ON id = A1.imageid WHERE A1.albumid = ?";// LIMIT "+ (startIndex) + "," + (recordPerPage);
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			pstatement.setInt(1, albumId);
 			try (ResultSet result = pstatement.executeQuery();) {
 				int i = 0;
-				do {
-					i++;
-					Image image = new Image();
-					image.setId(result.getInt("id"));
-					image.setTitle(result.getString("title"));
-					image.setDate(result.getDate("date"));
-					image.setImage(result.getBlob("image"));
-					images.add(image);	
-				} while (result.next() && i != recordPerPage);
+				if(result != null) {
+					do {
+						i++;
+						Image image = new Image();
+						image.setId(result.getInt("id"));
+						image.setTitle(result.getString("title"));
+						image.setTitle(result.getString("text"));
+						image.setTitle(result.getString("directory"));
+						image.setDate(result.getDate("date"));
+						image.setImage(result.getBlob("image"));
+						images.add(image);	
+					} while (result.next() && i != recordPerPage);
+				}
 			}
 			return images;
 		}
 	}
 	
 	public int countImages(int albumId) throws SQLException{
-		String query = "select count(*) from order where ? = order.album_id";
+		String query = "select count(*) from containment where ? = containment.albumid";
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			pstatement.setInt(1, albumId);
 			try (ResultSet result = pstatement.executeQuery();) {

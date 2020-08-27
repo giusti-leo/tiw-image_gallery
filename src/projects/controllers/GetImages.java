@@ -63,7 +63,9 @@ public class GetImages extends HttpServlet {
 		Integer pageNumber = null;
 		try {
 			albumId = Integer.parseInt(request.getParameter("albumid"));
+			System.out.println(albumId);
 			pageNumber = Integer.parseInt(request.getParameter("pageno"));
+			System.out.println(pageNumber);
 		} catch (NumberFormatException | NullPointerException e) {
 			// only for debugging e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
@@ -74,16 +76,31 @@ public class GetImages extends HttpServlet {
 		// obtain the expense report for it
 		ImageDAO imagesDAO = new ImageDAO(connection);
 		ArrayList<Image> images = new ArrayList<Image>();
+		
 		try {
-			images = imagesDAO.findImagesByAlbumId(albumId, startIndex, recordPerPage);
 			totalNumberOfRecords = imagesDAO.countImages(albumId);
+			System.out.println(totalNumberOfRecords);
 			if (images == null || totalNumberOfRecords < 0) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 				return;
 			}
 		} catch (SQLException e) {
 			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to recover missions");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to countImages");
+			return;
+		}
+		
+		
+		try {
+			images = imagesDAO.findImagesByAlbumId(albumId, startIndex, recordPerPage);
+			images.stream().forEach(w-> System.out.println(w.getId()+ " " + w.getTitle()));
+			if (images == null || totalNumberOfRecords < 0) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
+				return;
+			}
+		} catch (SQLException e) {
+			//for debugging only e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to findImagesByAlbumId");
 			return;
 		}
 		
@@ -92,7 +109,7 @@ public class GetImages extends HttpServlet {
 		request.setAttribute("pageno", pageNumber);
 		request.setAttribute("numberofpages", numberOfPages);
 		
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/ImagesPagination.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/ImagesPagination.jsp");
 		requestDispatcher.forward(request,response);
 		
 	}
