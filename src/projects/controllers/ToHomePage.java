@@ -23,7 +23,7 @@ import projects.beans.Album;
 import projects.dao.AlbumDAO;
 import projects.utils.ConnectionHandler;
 
-@WebServlet("/Home")
+@WebServlet("/HomePage")
 public class ToHomePage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;

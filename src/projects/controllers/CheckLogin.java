@@ -86,21 +86,17 @@ public class CheckLogin extends HttpServlet {
 			path = "/index.html";
 			templateEngine.process(path, ctx, response.getWriter());
 		} else {
-			//request.getSession().setAttribute("user", user);
-			//System.out.println("ServletContext: "+ getServletContext());
-			//System.out.println("getServletContext().getContextPath(): "+ getServletContext().getContextPath());
+			request.getSession().setAttribute("user", user);
+			path = getServletContext().getContextPath() + "/HomePage";
 			
-			//path = getServletContext().getContextPath() + "tiw-image_gallery/WEB-INF/HomePage.html";
-			//path = "HomePage.html";
-			//System.out.println("PATH: "+path);
-			//response.sendRedirect(path);
+			response.sendRedirect(path);
 			
-			String path1 = "/WEB-INF/HomePage.html";
+			/*String path1 = "/WEB-INF/HomePage.html";
 			request.getSession().setAttribute("user", user);
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("albums", albums);
-			templateEngine.process(path1, ctx, response.getWriter());
+			templateEngine.process(path1, ctx, response.getWriter());*/
 		}
 
 	}

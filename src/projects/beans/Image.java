@@ -9,7 +9,7 @@ public class Image {
 	private String title;
 	private String directory;
 	private Date date;
-	private Blob image;
+	private String text;
 
 	public int getId() {
 		return id;
@@ -44,12 +44,12 @@ public class Image {
 		this.directory = directory;
 	}
 
-	public Blob getImage() {
-		return image;
+	public String getText() {
+		return text;
 	}
 
-	public void setImage(Blob image) {
-		this.image = image;
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	
