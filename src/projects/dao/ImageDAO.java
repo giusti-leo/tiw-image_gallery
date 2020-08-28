@@ -18,14 +18,11 @@ public class ImageDAO {
 	public ArrayList<Image> findImagesByAlbumId(int albumId, int startIndex,int recordPerPage) throws SQLException {
 
 		ArrayList<Image> images = new ArrayList<Image>();
-		System.out.println(recordPerPage);
-		System.out.println(startIndex);
-		String query = "SELECT image.id, image.title, image.text, image.directory, image.date FROM image, containment WHERE  image.id = containment.imageid  GROUP BY containment.albumid HAVING containment.albumid = ?";// LIMIT ? , ?";
-		//String query = "SELECT * FROM image ORDER BY date DESC";
+		String query = "SELECT * FROM image, containment WHERE containment.albumid = ? AND image.id = containment.imageid LIMIT ?,?";
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			pstatement.setInt(1, albumId);
-			//pstatement.setInt(2, startIndex);
-			//pstatement.setInt(3, recordPerPage);
+			pstatement.setInt(2, startIndex);
+			pstatement.setInt(3, recordPerPage);
 			try (ResultSet result = pstatement.executeQuery();) {
 				int i = 0;
 				while(result.next()) {
@@ -38,7 +35,6 @@ public class ImageDAO {
 					image.setDirectory(result.getString("image.directory"));
 					image.setDate(result.getDate("image.date"));
 					images.add(image);	
-					result.next();
 					}
 				}
 			}
@@ -47,11 +43,14 @@ public class ImageDAO {
 	}
 	
 	public int countImages(int albumId) throws SQLException{
-		String query = "SELECT COUNT (*) FROM containment WHERE ? = albumid";
+		String query = "SELECT COUNT(*) FROM containment WHERE albumid = ?";
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			pstatement.setInt(1, albumId);
 			try (ResultSet result = pstatement.executeQuery();) {
-				return result.getInt(1);
+				int res = 0;
+				if(result.next())
+					res = result.getInt(1);
+				return res;
 			}
 		}
 	}
@@ -75,6 +74,4 @@ public class ImageDAO {
 		}
 		return image;
 	}
-
-	
 }

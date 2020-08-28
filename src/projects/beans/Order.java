@@ -1,14 +1,15 @@
 package projects.beans;
 
 public class Order {
+
 	private int id;
 	Album album;
 	User user;
-	
-	public Order(User user,Album album,int id) {
+
+	public Order(User user, Album album, int id) {
 		this.user = user;
-		this.album= album;
-		this.id= id;
+		this.album = album;
+		this.id = id;
 	}
 
 	public int getId() {
@@ -18,6 +19,4 @@ public class Order {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-
 }

@@ -1,10 +1,9 @@
 package projects.beans;
 
-import java.sql.Blob;
 import java.sql.Date;
 
 public class Image {
-	  
+
 	private int id;
 	private String title;
 	private String directory;
@@ -18,7 +17,6 @@ public class Image {
 	public void setId(int id) {
 		this.id = id;
 	}
-
 
 	public Date getDate() {
 		return date;
@@ -51,6 +49,4 @@ public class Image {
 	public void setText(String text) {
 		this.text = text;
 	}
-
-	
 }

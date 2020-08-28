@@ -38,5 +38,4 @@ public class Comment {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 }

@@ -14,7 +14,7 @@ public class AlbumDAO {
 	public AlbumDAO(Connection connection) {
 		this.con = connection;
 	}
-	
+
 	public ArrayList<Album> findAlbum() throws SQLException {
 		ArrayList<Album> albums = new ArrayList<Album>();
 
@@ -32,6 +32,4 @@ public class AlbumDAO {
 		}
 		return albums;
 	}
-
-	
 }

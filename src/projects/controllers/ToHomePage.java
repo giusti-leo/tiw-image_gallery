@@ -63,11 +63,11 @@ public class ToHomePage extends HttpServlet {
 			}
 		} catch (SQLException e) {
 			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to recover missions");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to find albums");
 			return;
 		}
 
-		// Redirect to the Home page and add missions to the parameters
+		// Redirect to the Home page and add albums to the parameters
 		String path = "/WEB-INF/HomePage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -87,5 +87,4 @@ public class ToHomePage extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
 }

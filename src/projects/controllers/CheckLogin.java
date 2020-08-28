@@ -58,7 +58,7 @@ public class CheckLogin extends HttpServlet {
 			return;
 		}
 
-		// query db to authenticate for user
+		// database's query to authenticate for user
 		UserDAO userDao = new UserDAO(connection);
 		User user = null;
 		ArrayList<Album> albums = null;
@@ -88,17 +88,9 @@ public class CheckLogin extends HttpServlet {
 		} else {
 			request.getSession().setAttribute("user", user);
 			path = getServletContext().getContextPath() + "/HomePage";
-			
-			response.sendRedirect(path);
-			
-			/*String path1 = "/WEB-INF/HomePage.html";
-			request.getSession().setAttribute("user", user);
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("albums", albums);
-			templateEngine.process(path1, ctx, response.getWriter());*/
-		}
 
+			response.sendRedirect(path);
+		}
 	}
 
 	public void destroy() {

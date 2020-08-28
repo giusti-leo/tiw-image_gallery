@@ -3,6 +3,7 @@ package projects.beans;
 import java.sql.Date;
 
 public class Album {
+
 	private int id;
 	private Date date;
 	private String title;
@@ -14,7 +15,6 @@ public class Album {
 	public void setId(int id) {
 		this.id = id;
 	}
-
 
 	public Date getDate() {
 		return date;

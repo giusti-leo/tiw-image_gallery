@@ -74,11 +74,10 @@ public class GetImages extends HttpServlet {
 		// obtain the expense report for it
 		ImageDAO imagesDAO = new ImageDAO(connection);
 		ArrayList<Image> images = new ArrayList<Image>();
-		
+		startIndex = (pageNumber - 1) * recordPerPage;
 		try {
 			images = imagesDAO.findImagesByAlbumId(albumId, startIndex, recordPerPage);
-			images.stream().forEach(i -> {System.out.println("IMAGES: "+i.getTitle());});   
-			//images.stream().forEach(w-> System.out.println(w.getId()+ " " + w.getTitle()));
+			totalNumberOfRecords = imagesDAO.countImages(albumId);
 			if (images == null || totalNumberOfRecords < 0) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 				return;
@@ -92,14 +91,21 @@ public class GetImages extends HttpServlet {
 		
 		boolean selected = false;
 		request.setAttribute("selected", selected);
-		numberOfPages = 1 + totalNumberOfRecords / recordPerPage;
+		numberOfPages = counterNumberOfPages(totalNumberOfRecords, recordPerPage);
 		request.setAttribute("images", images);
 		request.setAttribute("pageno", pageNumber);
 		request.setAttribute("numberofpages", numberOfPages);
-		
+		request.setAttribute("albumid", albumId);
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/AlbumPage.jsp");
 		requestDispatcher.forward(request,response);
 		
+	}
+	
+	private int counterNumberOfPages(int totalNumberOfRecords, int recordPerPage) {
+		if(totalNumberOfRecords % recordPerPage == 0)
+			return totalNumberOfRecords / recordPerPage;
+		else
+			return totalNumberOfRecords / recordPerPage + 1;
 	}
 
 	public void destroy() {

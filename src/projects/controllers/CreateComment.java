@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
+import exceptions.BadCommentForImage;
 import projects.beans.User;
 import projects.dao.CommentDAO;
 import projects.utils.ConnectionHandler;
@@ -61,12 +62,15 @@ public class CreateComment extends HttpServlet {
 			return;
 		}
 
-		// Create mission in DB
+		// Create comment in database
 		try {
 			commentDAO.createComment(user.getId(), imageId, text);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create comment");
+			return;
+		} catch (BadCommentForImage e2) {
+			response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, "Upload Error due to BadCommentForImage");
 			return;
 		}
 

@@ -24,7 +24,7 @@ public class Logout extends HttpServlet {
 		if (session != null) {
 			session.invalidate();
 		}
-		String path = getServletContext() + "/index.html";
+		String path = getServletContext().getContextPath() + "/index.html";
 		response.sendRedirect(path);
 	}
 
@@ -32,5 +32,4 @@ public class Logout extends HttpServlet {
 			throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }

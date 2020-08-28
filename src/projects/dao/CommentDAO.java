@@ -6,8 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import projects.beans.Comment;
-//import projects.beans.Image;
+import exceptions.BadCommentForImage;
 import projects.beans.User;
 
 public class CommentDAO {
@@ -16,11 +15,10 @@ public class CommentDAO {
 	public CommentDAO(Connection connection) {
 		this.connection = connection;
 	}
-	
 
-	public HashMap<User,String> findCommentsByImageId(int imageId) throws SQLException {
-		HashMap<User,String> comments = new HashMap<User,String>();
-		
+	public HashMap<User, String> findCommentsByImageId(int imageId) throws SQLException {
+		HashMap<User, String> comments = new HashMap<User, String>();
+
 		String query = "SELECT comment.text, user.name, user.surname FROM comment, image, user WHERE comment.userid=user.id AND image.id = ? AND comment.image_id=image.id ";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setInt(1, imageId);
@@ -37,9 +35,11 @@ public class CommentDAO {
 		}
 		return comments;
 	}
-	
-	public void createComment(int userId, int imageId, String text)
-			throws SQLException {
+
+	public void createComment(int userId, int imageId, String text) throws SQLException, BadCommentForImage {
+		// Check if text is null
+		if (text.isEmpty() || userId < 0 || imageId < 0)
+			throw new BadCommentForImage("Upload error");
 
 		String query = "INSERT INTO comment (userid, image_id, text) VALUES ( ? , ? , ?)";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
@@ -49,5 +49,4 @@ public class CommentDAO {
 			pstatement.executeUpdate();
 		}
 	}
-
 }
