@@ -18,7 +18,7 @@ public class AlbumDAO {
 	public ArrayList<Album> findAlbum() throws SQLException {
 		ArrayList<Album> albums = new ArrayList<Album>();
 
-		String query = "SELECT * from album ORDER BY date DESC";
+		String query = "SELECT * FROM album ORDER BY date DESC";
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			try (ResultSet result = pstatement.executeQuery();) {
 				while (result.next()) {

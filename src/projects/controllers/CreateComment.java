@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -73,10 +74,25 @@ public class CreateComment extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, "Upload Error due to BadCommentForImage");
 			return;
 		}
-
+		
+		/*
+		try {
+		GetComments getComments = new GetComments();
+		//String ctxpath = getServletContext().getContextPath();
+		request.setAttribute("imageid", imageId);
+		getComments.doGet(request, response);
+		//String path = ctxpath + "/GetComments";
+		//response.sendRedirect(path);
+		} catch (Exception e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to redirect comment page");
+			return;
+		}
+		*/
+		// Return view
 		String ctxpath = getServletContext().getContextPath();
-		String path = ctxpath + "/HomePage";
+		String path = ctxpath + "/GetComments?imageid=" + imageId;
 		response.sendRedirect(path);
+		
 	}
 
 	public void destroy() {

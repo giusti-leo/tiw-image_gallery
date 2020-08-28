@@ -14,41 +14,40 @@
 	<c:if test="${not selected}">
 		<table>
 			<tr>
-				<th>Thumbnail</th>
-				<th>Title</th>
-			</tr>
-			<c:forEach var="photos" items="${images}">
-				<tr>
-
+				<td>Thumbnail</td>
+				<c:forEach var="photos" items="${images}">
 					<td><a href="GetComments?imageid=${photos.id}"> <img
 							src="${photos.directory}/${photos.title}.jpg" width="40"
 							height="40" />
 					</a></td>
+				</c:forEach>
+			</tr>
+			<tr>
+				<td>Title</td>
+				<c:forEach var="photos" items="${images}">
 					<td>${photos.title}</td>
-				</tr>
-			</c:forEach>
-			<tr>
-				<c:if test="${numberofpages gt pageno}">
-					<td><div>
-							<form action="GetImages" method="GET">
-								<input type="hidden" name="albumid" value="${albumid}" /> <input
-									type="hidden" name="pageno" value="${pageno+1}" />
-								<button type="submit">NEXT</button>
-							</form>
-						</div></td>
-				</c:if>
-			<tr>
-				<c:if test="${pageno != 1}">
-					<td><div>
-							<form action="GetImages" method="GET">
-								<input type="hidden" name="albumid" value="${albumid}" /> <input
-									type="hidden" name="pageno" value="${pageno-1}" />
-								<button type="submit">BACK</button>
-							</form>
-						</div></td>
-				</c:if>
+				</c:forEach>
 			</tr>
 		</table>
+		
+		<c:if test="${numberofpages gt pageno}">
+			<div align="right">
+				<form action="GetImages" method="GET">
+					<input type="hidden" name="albumid" value="${albumid}" /> <input
+						type="hidden" name="pageno" value="${pageno+1}" />
+					<button type="submit">NEXT</button>
+				</form>
+			</div>
+		</c:if>
+		<c:if test="${pageno != 1}">
+			<div align="left">
+				<form action="GetImages" method="GET">
+					<input type="hidden" name="albumid" value="${albumid}" /> <input
+						type="hidden" name="pageno" value="${pageno-1}" />
+					<button type="submit">BACK</button>
+				</form>
+			</div>
+		</c:if>
 
 	</c:if>
 	<c:if test="${selected}">
@@ -75,7 +74,7 @@
 			</tr>
 			<c:forEach var="list" items="${listofcomments}">
 				<tr>
-					<td>${list['key'].surname}${list['key'].name}</td>
+					<td>${list['key'].surname} ${list['key'].name}</td>
 					<td>${list.value}</td>
 				</tr>
 			</c:forEach>
@@ -92,7 +91,7 @@
 			</form>
 		</div>
 	</c:if>
-	<div>
+	<div align="center">
 		<form action="HomePage" method="GET">
 			<button>BACK TO HOMEPAGE</button>
 		</form>

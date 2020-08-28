@@ -18,7 +18,7 @@ public class ImageDAO {
 	public ArrayList<Image> findImagesByAlbumId(int albumId, int startIndex,int recordPerPage) throws SQLException {
 
 		ArrayList<Image> images = new ArrayList<Image>();
-		String query = "SELECT * FROM image, containment WHERE containment.albumid = ? AND image.id = containment.imageid LIMIT ?,?";
+		String query = "SELECT * FROM image, containment WHERE containment.albumid = ? AND image.id = containment.imageid ORDER BY date DESC LIMIT ?,?";
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			pstatement.setInt(1, albumId);
 			pstatement.setInt(2, startIndex);
