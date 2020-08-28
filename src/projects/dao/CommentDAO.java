@@ -18,77 +18,34 @@ public class CommentDAO {
 	}
 	
 
-	public HashMap<Comment,User> findCommetsByImageId(int imageId) throws SQLException {
-		HashMap<Comment,User> comments = new HashMap<Comment,User>();
+	public HashMap<User,String> findCommentsByImageId(int imageId) throws SQLException {
+		HashMap<User,String> comments = new HashMap<User,String>();
 		
-		String query = "SELECT user.name , user.surname , comment.text , user.id FROM comment, user, image WHERE image.id = ? AND comment.user_id = user.id AND comment.image_id = image.id";
+		String query = "SELECT comment.text, user.name, user.surname FROM comment, image, user WHERE comment.userid=user.id AND image.id = ? AND comment.image_id=image.id ";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
 			pstatement.setInt(1, imageId);
 			try (ResultSet result = pstatement.executeQuery();) {
 				while (result.next()) {
 					User user = new User();
-					Comment comment = new Comment();
-					user.setId(result.getInt("user.id"));
+					String comment;
 					user.setName(result.getString("user.name"));
 					user.setSurname(result.getString("user.surname"));
-					comment.setComment(result.getString("comment.text"));
-					comments.put(comment, user);
+					comment = (result.getString("comment.text"));
+					comments.put(user, comment);
 				}
 			}
 		}
 		return comments;
 	}
 	
-	/*
-	private User findUserById(int id) throws SQLException {
-		User user = null;
-
-		String query = "SELECT * FROM user WHERE id = ?";
-		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setInt(1, id);
-			try (ResultSet result = pstatement.executeQuery();) {
-				if (result.next()) {
-					user = new User();
-					user.setId(result.getInt("id"));
-					user.setName(result.getString("name"));
-					user.setSurname(result.getString("surname"));
-				}	
-			}
-		}
-		return user;
-	}
-	
-	
-	private Image findImageById(int imageId) throws SQLException{
-		Image image = null;
-
-		String query = "SELECT * FROM image WHERE id = ?";
-		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setInt(1, imageId);
-			try (ResultSet result = pstatement.executeQuery();) {
-				if (result.next()) {
-					image = new Image();
-					image.setId(result.getInt("id"));
-					image.setTitle(result.getString("title"));
-					image.setDirectory(result.getString("directory"));
-					image.setDate(result.getDate("date"));
-					image.setImage(result.getBlob("image"));
-				}	
-			}
-		}
-		return image;
-	}
-	*/
-	
-
 	public void createComment(int userId, int imageId, String text)
 			throws SQLException {
 
-		String query = "INSERT into comment (id,user_id, image_id, text) VALUES(NULL,?,?,?)";
+		String query = "INSERT INTO comment (userid, image_id, text) VALUES ( ? , ? , ?)";
 		try (PreparedStatement pstatement = connection.prepareStatement(query);) {
-			pstatement.setInt(2, userId);
-			pstatement.setInt(3, imageId);
-			pstatement.setString(4, text);
+			pstatement.setInt(1, userId);
+			pstatement.setInt(2, imageId);
+			pstatement.setString(3, text);
 			pstatement.executeUpdate();
 		}
 	}

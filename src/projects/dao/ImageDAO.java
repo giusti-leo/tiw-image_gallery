@@ -15,28 +15,6 @@ public class ImageDAO {
 		this.con = connection;
 	}
 	
-	public ArrayList<Image> findListOfImages(int index) throws SQLException {
-		ArrayList<Image> images = new ArrayList<Image>();
-
-		String query = "SELECT * FROM image ORDER BY date DESC";
-		try (PreparedStatement pstatement = con.prepareStatement(query);) {
-			try (ResultSet result = pstatement.executeQuery();) {
-				for(int i=1; i<(index-1)*5;i++) {
-					result.next();
-				}
-				for(int i=index*5;i<(index+1)*5;i++) {
-					Image image = new Image();
-					image.setId(result.getInt("id"));
-					image.setTitle(result.getString("title"));
-					image.setDirectory(result.getString("directory"));
-					image.setDate(result.getDate("date"));
-					images.add(image);	
-				}
-			}
-		}
-		return images;
-	}
-	
 	public ArrayList<Image> findImagesByAlbumId(int albumId, int startIndex,int recordPerPage) throws SQLException {
 
 		ArrayList<Image> images = new ArrayList<Image>();
@@ -88,10 +66,9 @@ public class ImageDAO {
 					image = new Image();
 					image.setId(result.getInt("id"));
 					image.setTitle(result.getString("title"));
-					image.setTitle(result.getString("text"));
-					image.setTitle(result.getString("directory"));
+					image.setText(result.getString("text"));
+					image.setDirectory(result.getString("directory"));
 					image.setDate(result.getDate("date"));
-					image.setImage(result.getBlob("image"));
 				}	
 			}
 		}

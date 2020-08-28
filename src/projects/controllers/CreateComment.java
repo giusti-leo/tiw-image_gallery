@@ -65,14 +65,14 @@ public class CreateComment extends HttpServlet {
 		try {
 			commentDAO.createComment(user.getId(), imageId, text);
 		} catch (SQLException e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create mission");
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create comment");
 			return;
 		}
 
-		request.setAttribute("imageid", imageId);
-		GetComments getComment= new GetComments();
-		getComment.doGet(request,response);
-		
+		String ctxpath = getServletContext().getContextPath();
+		String path = ctxpath + "/HomePage";
+		response.sendRedirect(path);
 	}
 
 	public void destroy() {

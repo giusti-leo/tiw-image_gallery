@@ -63,9 +63,7 @@ public class GetImages extends HttpServlet {
 		Integer pageNumber = null;
 		try {
 			albumId = Integer.parseInt(request.getParameter("albumid"));
-			//System.out.println("albumid: "+ albumId);
 			pageNumber = Integer.parseInt(request.getParameter("pageno"));
-			//System.out.println("pageno: " + pageNumber);
 		} catch (NumberFormatException | NullPointerException e) {
 			// only for debugging e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
@@ -77,21 +75,6 @@ public class GetImages extends HttpServlet {
 		ImageDAO imagesDAO = new ImageDAO(connection);
 		ArrayList<Image> images = new ArrayList<Image>();
 		Image image1 = null;
-		/*
-		try {
-			totalNumberOfRecords = imagesDAO.countImages(albumId);
-			System.out.println(totalNumberOfRecords);
-			if (images == null || totalNumberOfRecords < 0) {
-				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
-				return;
-			}
-		} catch (SQLException e) {
-			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to countImages");
-			return;
-		}
-		*/
-		
 		
 		try {
 			images = imagesDAO.findImagesByAlbumId(albumId, startIndex, recordPerPage);
@@ -108,13 +91,14 @@ public class GetImages extends HttpServlet {
 			return;
 		}
 		
+		boolean selected = false;
+		request.setAttribute("selected", selected);
 		numberOfPages = 1 + totalNumberOfRecords / recordPerPage;
 		request.setAttribute("images", images);
 		request.setAttribute("pageno", pageNumber);
 		request.setAttribute("numberofpages", numberOfPages);
 		
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/AlbumPage.jsp");
-		//System.out.println(requestDispatcher);
 		requestDispatcher.forward(request,response);
 		
 	}

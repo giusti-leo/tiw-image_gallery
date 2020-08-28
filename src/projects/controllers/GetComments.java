@@ -36,6 +36,7 @@ public class GetComments extends HttpServlet {
 	}
 
 	public void init() throws ServletException {
+		connection = ConnectionHandler.getConnection(getServletContext());
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
 		templateResolver.setTemplateMode(TemplateMode.HTML);
@@ -43,7 +44,7 @@ public class GetComments extends HttpServlet {
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
 
-		connection = ConnectionHandler.getConnection(getServletContext());
+		
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -57,7 +58,12 @@ public class GetComments extends HttpServlet {
 			response.sendRedirect(loginpath);
 			return;
 		}
-
+		
+		System.out.println(((User) request.getSession().getAttribute("user")).getId());
+		//System.out.println(user.getName());
+		//System.out.println(user.getSurname());
+		//System.out.println(user.getUsername());
+		//System.out.println(user.getPassword());
 		// get and check params
 		Integer imageId = null;
 		try {
@@ -77,29 +83,42 @@ public class GetComments extends HttpServlet {
 		Image image = new Image();
 		
 		//'user' is used to redirect someone
-		User user = new User();
+		//User user = new User();
 		
 		//'comments' is used to show comments
 		CommentDAO commentDAO = new CommentDAO(connection);
-		HashMap<Comment,User> comments = new HashMap<Comment,User>();
+		HashMap<User, String> comments = new HashMap<User, String>();
 		
 		try {
 			image = imagesDAO.findImageById(imageId);
-			comments = commentDAO.findCommetsByImageId(imageId);
 			if (image == null ) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 				return;
 			}
 		} catch (SQLException e) {
 			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to recover missions");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to findImageById");
 			return;
 		}
 		
-		request.getSession().setAttribute("user", user);
+		try {
+			comments = commentDAO.findCommentsByImageId(imageId);
+			if (comments == null ) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
+				return;
+			}
+		} catch (SQLException e) {
+			// for debugging only e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to findCommetsByImageId");
+			return;
+		}
+
+		boolean selected = true;
+		request.setAttribute("selected", selected);
 		request.setAttribute("image", image);
 		request.setAttribute("listofcomments", comments);
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/AlbumPage.jsp");
+		
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/AlbumPage.jsp");
 		requestDispatcher.forward(request,response);
 		
 	}
