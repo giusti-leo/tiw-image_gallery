@@ -74,11 +74,10 @@ public class GetImages extends HttpServlet {
 		// obtain the expense report for it
 		ImageDAO imagesDAO = new ImageDAO(connection);
 		ArrayList<Image> images = new ArrayList<Image>();
-		Image image1 = null;
 		
 		try {
 			images = imagesDAO.findImagesByAlbumId(albumId, startIndex, recordPerPage);
-			System.out.println("IMAGES: "+images);
+			images.stream().forEach(i -> {System.out.println("IMAGES: "+i.getTitle());});   
 			//images.stream().forEach(w-> System.out.println(w.getId()+ " " + w.getTitle()));
 			if (images == null || totalNumberOfRecords < 0) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");

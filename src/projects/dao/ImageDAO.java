@@ -18,13 +18,14 @@ public class ImageDAO {
 	public ArrayList<Image> findImagesByAlbumId(int albumId, int startIndex,int recordPerPage) throws SQLException {
 
 		ArrayList<Image> images = new ArrayList<Image>();
-		
-		String query = "SELECT image.id, image.title, image.text, image.directory, image.date FROM image, containment WHERE  image.id = containment.imageid AND  containment.albumid = ? LIMIT ? , ?";
+		System.out.println(recordPerPage);
+		System.out.println(startIndex);
+		String query = "SELECT image.id, image.title, image.text, image.directory, image.date FROM image, containment WHERE  image.id = containment.imageid  GROUP BY containment.albumid HAVING containment.albumid = ?";// LIMIT ? , ?";
 		//String query = "SELECT * FROM image ORDER BY date DESC";
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			pstatement.setInt(1, albumId);
-			pstatement.setInt(2, startIndex);
-			pstatement.setInt(3, recordPerPage);
+			//pstatement.setInt(2, startIndex);
+			//pstatement.setInt(3, recordPerPage);
 			try (ResultSet result = pstatement.executeQuery();) {
 				int i = 0;
 				while(result.next()) {
