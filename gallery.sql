@@ -20,13 +20,14 @@ CREATE TABLE `user` (
   `surname` VARCHAR(50) NOT NULL,
   `username` VARCHAR(45) NOT NULL,
   `password` VARCHAR(10) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`)
   )
 ENGINE=InnoDB AUTO_INCREMENT=300 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (301,'leonardo','giusti','leonardo.giusti','leo123'),(302,'luca','giudici','luca.giudici','luca1998'),(303,'davide','guerra','davide.guerra','dado98'),(304,'karl','klay','karl.klay','karllrak'), (305,'anonino','ignoto','a','a');
+INSERT INTO `user` VALUES (301,'leonardo','giusti','leonardo.giusti','leo123','leonardo.giusti@mail.polimi.com'),(302,'luca','giudici','luca.giudici','luca1998','luca.giudici@mail.polimi.com'),(303,'davide','guerra','davide.guerra','dado98','davide_war@mail.polimi.com'),(304,'karl','klay','karl.klay','karllrak','magic_karl@mail.polimi.com'), (305,'anonino','ignoto','a','a','utente.anonimo@mail.polimi.com');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,7 +63,7 @@ ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 LOCK TABLES `image` WRITE;
 /*!40000 ALTER TABLE `image` DISABLE KEYS */;
-INSERT INTO `image` VALUES (200,'tartaruga','ninja ','C:/Users/Cipo/git/tiw-image_gallery/images','2015-01-01 20:14:08'),(201,'aquila','one text','C:/Users/Cipo/git/tiw-image_gallery/images','2020-06-21 20:14:08'), (202,'capibara','che animale strano','C:/Users/Cipo/git/tiw-image_gallery/images','2020-06-26 17:14:08'),(203,'cervo','che bello','C:/Users/Cipo/git/tiw-image_gallery/images','2017-03-21 20:14:08'),(204,'civetta','guarda che occhi','C:/Users/Cipo/git/tiw-image_gallery/images','2020-01-23 20:00:08'),(205,'drago_di_comodo','Fa paura','C:/Users/Cipo/git/tiw-image_gallery/images','2013-11-21 20:14:08'),(206,'gufo','che colore','C:/Users/Cipo/git/tiw-image_gallery/images','2019-08-21 20:14:08'),(207,'kiwi','pensavo fosse un frutto','C:/Users/Cipo/git/tiw-image_gallery/images','2020-06-21 20:14:00'),(208,'koala','first pic','C:/Users/Cipo/git/tiw-image_gallery/images','2020-06-21 20:14:08'),(209,'leone','segno zodiacale','C:/Users/Cipo/git/tiw-image_gallery/images','2020-02-11 20:14:08'),(210,'lince','una lince','C:/Users/Cipo/git/tiw-image_gallery/images','2018-10-21 10:14:08'),(211,'lupo','Timore','C:/Users/Cipo/git/tiw-image_gallery/images','2020-06-19 19:14:08'),(212,'pantera','nerissima','C:/Users/Cipo/git/tiw-image_gallery/images','2019-01-21 20:14:08'),(213,'pinguino','pingui','C:/Users/Cipo/git/tiw-image_gallery/images','2020-06-01 20:01:08'),(214,'elefante','dumbo','C:/Users/Cipo/git/tiw-image_gallery/images','2020-06-01 18:10:08');
+INSERT INTO `image` VALUES (200,'tartaruga','ninja ','C:/Users/leona/git/tiw-image_gallery/images','2015-01-01 20:14:08'),(201,'aquila','one text','C:/Users/leona/git/tiw-image_gallery/images','2020-06-21 20:14:08'), (202,'capibara','che animale strano','C:/Users/leona/git/tiw-image_gallery/images','2020-06-26 17:14:08'),(203,'cervo','che bello','C:/Users/leona/git/tiw-image_gallery/images','2017-03-21 20:14:08'),(204,'civetta','guarda che occhi','C:/Users/leona/git/tiw-image_gallery/images','2020-01-23 20:00:08'),(205,'drago_di_comodo','Fa paura','C:/Users/leona/git/tiw-image_gallery/images','2013-11-21 20:14:08'),(206,'gufo','che colore','C:/Users/leona/git/tiw-image_gallery/images','2019-08-21 20:14:08'),(207,'kiwi','pensavo fosse un frutto','C:/Users/leona/git/tiw-image_gallery/images','2020-06-21 20:14:00'),(208,'koala','first pic','C:/Users/leona/git/tiw-image_gallery/images','2020-06-21 20:14:08'),(209,'leone','segno zodiacale','C:/Users/leona/git/tiw-image_gallery/images','2020-02-11 20:14:08'),(210,'lince','una lince','C:/Users/leona/git/tiw-image_gallery/images','2018-10-21 10:14:08'),(211,'lupo','Timore','C:/Users/leona/git/tiw-image_gallery/images','2020-06-19 19:14:08'),(212,'pantera','nerissima','C:/Users/leona/git/tiw-image_gallery/images','2019-01-21 20:14:08'),(213,'pinguino','pingui','C:/Users/leona/git/tiw-image_gallery/images','2020-06-01 20:01:08'),(214,'elefante','dumbo','C:/Users/leona/git/tiw-image_gallery/images','2020-06-01 18:10:08');
 /*!40000 ALTER TABLE `image` ENABLE KEYS */;
 UNLOCK TABLES;
 

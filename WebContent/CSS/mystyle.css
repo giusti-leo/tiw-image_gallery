@@ -1,0 +1,91 @@
+.boxed {
+    border: 1px solid black;
+}
+
+th.sortable {
+    cursor: pointer;
+}
+
+.alertmessage {
+    color: #ff0000;
+}
+
+#successfulRegistration {
+    visibility: hidden;
+}
+
+#addtocontacts {
+    visibility: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font: 16px Arial;
+}
+
+.autocomplete {
+    /*the container must be positioned relative:*/
+    position: relative;
+    display: inline-block;
+}
+
+input {
+    border: 1px solid grey;
+    background-color: #f1f1f1;
+    padding: 5px;
+    font-size: 16px;
+}
+
+input[type=text] {
+    background-color: #f1f1f1;
+    width: 300px;
+    margin-top: 15px;
+}
+
+input[type=number] {
+    background-color: #f1f1f1;
+    width: 300px;
+    margin-top: 15px;
+}
+
+input[type=button] {
+    background-color: #f1f1f1;
+    margin-top: 10px;
+}
+
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.autocomplete-items div:hover {
+    /*when hovering an item:*/
+    background-color: #e9e9e9;
+}
+
+.autocomplete-active {
+    /*when navigating through the items using the arrow keys:*/
+    background-color: DodgerBlue !important;
+    color: #ffffff;
+}
+
+#recipient-accountid {
+    margin-top: 10px;
+}
