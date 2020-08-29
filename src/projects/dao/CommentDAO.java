@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import exceptions.BadCommentForImage;
+import project.exceptions.BadCommentForImage;
 import projects.beans.User;
 
 public class CommentDAO {
