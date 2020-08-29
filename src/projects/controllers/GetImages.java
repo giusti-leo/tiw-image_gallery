@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
@@ -90,15 +89,16 @@ public class GetImages extends HttpServlet {
 		}
 		
 		boolean selected = false;
-		request.setAttribute("selected", selected);
-		numberOfPages = counterNumberOfPages(totalNumberOfRecords, recordPerPage);
-		request.setAttribute("images", images);
-		request.setAttribute("pageno", pageNumber);
-		request.setAttribute("numberofpages", numberOfPages);
-		request.setAttribute("albumid", albumId);
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/AlbumPage.jsp");
-		requestDispatcher.forward(request,response);
-		
+		numberOfPages = counterNumberOfPages(totalNumberOfRecords, recordPerPage); 
+		String path = "/WEB-INF/AlbumPage.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("images", images);
+		ctx.setVariable("pageno", pageNumber);
+		ctx.setVariable("numberofpages", numberOfPages);
+		ctx.setVariable("albumid", albumId);
+		ctx.setVariable("selected", selected);
+		templateEngine.process(path, ctx, response.getWriter());
 	}
 	
 	private int counterNumberOfPages(int totalNumberOfRecords, int recordPerPage) {

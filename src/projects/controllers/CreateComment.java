@@ -75,19 +75,6 @@ public class CreateComment extends HttpServlet {
 			return;
 		}
 		
-		/*
-		try {
-		GetComments getComments = new GetComments();
-		//String ctxpath = getServletContext().getContextPath();
-		request.setAttribute("imageid", imageId);
-		getComments.doGet(request, response);
-		//String path = ctxpath + "/GetComments";
-		//response.sendRedirect(path);
-		} catch (Exception e) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to redirect comment page");
-			return;
-		}
-		*/
 		// Return view
 		String ctxpath = getServletContext().getContextPath();
 		String path = ctxpath + "/GetComments?imageid=" + imageId;

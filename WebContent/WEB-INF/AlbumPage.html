@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Images</title>
+</head>
+<body>
+	<div align="right">
+		<a href="Logout">Logout</a>
+	</div>
+	<table th:if="${!selected}">
+		<tr>
+			<td>Thumbnail</td>
+			<td th:each="photos : ${images}"><a
+				th:href="@{/GetComments(imageid=${photos.id},pageno=1)}"> <img
+					th:src="@{${photos.directory} + '/' + ${photos.title} + '.jpg'}"
+					width="40" height="40" />
+			</a></td>
+		</tr>
+		<tr>
+			<td>Title</td>
+			<td th:each="photos : ${images}" th:text="${photos.title}"></td>
+		</tr>
+	</table>
+	
+	<table th:if="${selected}">
+		<tr>
+			<th>Title</th>
+			<th>Image</th>
+			<th>Date</th>
+			<th>Directory</th>
+		</tr>
+		<tr>
+			<td th:text="${image.title }"></td>
+			<td><img
+				th:src="@{${image.directory} + '/' + ${image.title} + '.jpg'}"
+				width="400" height="400" /></td>
+			<td th:text="${image.date}"></td>
+			<td th:text="${image.directory}"></td>
+		</tr>
+	</table>
+
+	<table th:if="${selected}">
+		<tr>
+			<th>User</th>
+			<th>Comment</th>
+		</tr>
+		<tr th:each="l: ${listofcomments.keySet()}">
+			<td> <span th:text="${l.surname}"> </span> <span th:text="${l.name}"> </span></td>
+			<td th:text="${listofcomments.get(l)}"></td>
+		</tr>
+	</table>
+
+	<div th:if="${selected}">
+		<form action="CreateComment" method="POST">
+			<fieldset>
+				<p>
+					Insert comment: <input type="text" name="text" required />
+				</p>
+				<button type="submit" name="imageid" th:value="${image.id}">Send</button>
+			</fieldset>
+		</form>
+	</div>
+	<div th:if="${numberofpages gt pageno}" align="right">
+		<form action="GetImages" method="GET">
+			<input type="hidden" name="albumid" th:value="${albumid}" /> <input
+				type="hidden" name="pageno" th:value="${pageno}+1" />
+			<button type="submit">NEXT</button>
+		</form>
+	</div>
+	<div th:if="${pageno }!=1" align="left">
+		<form action="GetImages" method="GET">
+			<input type="hidden" name="albumid" th:value="${albumid}" /> <input
+				type="hidden" name="pageno" th:value="${pageno}-1" />
+			<button type="submit">BACK</button>
+		</form>
+	</div>
+	<div align="center">
+		<form action="HomePage" method="GET">
+			<button>BACK TO HOMEPAGE</button>
+		</form>
+	</div>
+</body>
+</html>
+

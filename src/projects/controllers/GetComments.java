@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
@@ -77,38 +78,31 @@ public class GetComments extends HttpServlet {
 		// 'comments' is used to show comments
 		CommentDAO commentDAO = new CommentDAO(connection);
 		HashMap<User, String> comments = new HashMap<User, String>();
-
+		
 		try {
 			image = imagesDAO.findImageById(imageId);
-			if (image == null) {
-				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
-				return;
-			}
-		} catch (SQLException e) {
-			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to findImageById");
-			return;
-		}
-
-		try {
 			comments = commentDAO.findCommentsByImageId(imageId);
-			if (comments == null) {
+			if (image == null || comments == null) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource not found");
 				return;
 			}
 		} catch (SQLException e) {
 			// for debugging only e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to findCommetsByImageId");
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to find image's data");
 			return;
 		}
-
+		
 		boolean selected = true;
-		request.setAttribute("selected", selected);
-		request.setAttribute("image", image);
-		request.setAttribute("listofcomments", comments);
-
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/AlbumPage.jsp");
-		requestDispatcher.forward(request, response);
+		
+		String path = "/WEB-INF/AlbumPage.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("selected", selected);
+		ctx.setVariable("image", image);
+		ctx.setVariable("listofcomments", comments);
+		ctx.setVariable("selected", selected);
+		ctx.setVariable("pageno", 1);
+		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	public void destroy() {
