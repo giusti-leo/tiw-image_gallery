@@ -69,8 +69,6 @@ public class GetImages extends HttpServlet {
 			return;
 		}
 
-		// If a mission with that ID exists for that USER,
-		// obtain the expense report for it
 		ImageDAO imagesDAO = new ImageDAO(connection);
 		ArrayList<Image> images = new ArrayList<Image>();
 		startIndex = (pageNumber - 1) * recordPerPage;

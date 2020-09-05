@@ -15,7 +15,7 @@
 			<td>Thumbnail</td>
 			<td th:each="photos : ${images}"><a
 				th:href="@{/GetComments(imageid=${photos.id},pageno=1)}"> <img
-					th:src="@{${photos.directory} + '/' + ${photos.title} + '.jpg'}"
+					th:src="@{${photos.directory}}"
 					width="40" height="40" />
 			</a></td>
 		</tr>
@@ -35,7 +35,7 @@
 		<tr>
 			<td th:text="${image.title }"></td>
 			<td><img
-				th:src="@{${image.directory} + '/' + ${image.title} + '.jpg'}"
+				th:src="@{${image.directory}}"
 				width="400" height="400" /></td>
 			<td th:text="${image.date}"></td>
 			<td th:text="${image.directory}"></td>

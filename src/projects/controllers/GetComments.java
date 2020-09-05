@@ -57,7 +57,7 @@ public class GetComments extends HttpServlet {
 			response.sendRedirect(loginpath);
 			return;
 		}
-		
+
 		// get and check params
 		Integer imageId = null;
 		try {
@@ -78,7 +78,7 @@ public class GetComments extends HttpServlet {
 		// 'comments' is used to show comments
 		CommentDAO commentDAO = new CommentDAO(connection);
 		HashMap<User, String> comments = new HashMap<User, String>();
-		
+
 		try {
 			image = imagesDAO.findImageById(imageId);
 			comments = commentDAO.findCommentsByImageId(imageId);
@@ -91,9 +91,9 @@ public class GetComments extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to find image's data");
 			return;
 		}
-		
+
 		boolean selected = true;
-		
+
 		String path = "/WEB-INF/AlbumPage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
