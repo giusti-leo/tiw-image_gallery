@@ -34,7 +34,6 @@ public class CreateComment extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// If the user is not logged in (not present in session) redirect to the login
 		HttpSession session = request.getSession();
 		if (session.isNew() || session.getAttribute("user") == null) {
 			String loginpath = getServletContext() + "/index.html";
@@ -42,7 +41,6 @@ public class CreateComment extends HttpServlet {
 			return;
 		}
 
-		// Get and parse all parameters from request
 		boolean isBadRequest = false;
 		String text = null;
 		Integer imageId = null;
@@ -62,23 +60,20 @@ public class CreateComment extends HttpServlet {
 			return;
 		}
 
-		// Create comment in database
 		try {
 			commentDAO.createComment(user.getId(), imageId, text);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to create comment");
 			return;
-		} catch (BadCommentForImage e2) {
+		} catch (BadCommentForImage ex) {
 			response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED, "Upload Error due to BadCommentForImage");
 			return;
 		}
 		
-		// Return view
 		String ctxpath = getServletContext().getContextPath();
 		String path = ctxpath + "/GetComments?imageid=" + imageId;
 		response.sendRedirect(path);
-		
 	}
 
 	public void destroy() {
@@ -88,5 +83,4 @@ public class CreateComment extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
 }

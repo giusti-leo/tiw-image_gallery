@@ -19,7 +19,7 @@ public class UserDAO {
 			pstatement.setString(1, usrn);
 			pstatement.setString(2, pwd);
 			try (ResultSet result = pstatement.executeQuery();) {
-				if (!result.isBeforeFirst()) // no results, credential check failed
+				if (!result.isBeforeFirst())
 					return null;
 				else {
 					result.next();

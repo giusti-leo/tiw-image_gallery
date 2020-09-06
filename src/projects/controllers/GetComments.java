@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,7 +48,6 @@ public class GetComments extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// If the user is not logged in (not present in session) redirect to the login
 		String loginpath = getServletContext() + "/index.html";
 		HttpSession session = request.getSession();
 
@@ -58,20 +56,15 @@ public class GetComments extends HttpServlet {
 			return;
 		}
 
-		// get and check params
 		Integer imageId = null;
 		try {
 			imageId = Integer.parseInt(request.getParameter("imageid"));
 		} catch (NumberFormatException | NullPointerException e) {
-			// only for debugging e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
 			return;
 		}
 
-		// If a image with that id exists for that user,
-		// obtain its list of comments
-
-		// 'image' is used to zoom
+		// 'image' is used to view real size image
 		ImageDAO imagesDAO = new ImageDAO(connection);
 		Image image = new Image();
 
@@ -87,7 +80,6 @@ public class GetComments extends HttpServlet {
 				return;
 			}
 		} catch (SQLException e) {
-			// for debugging only e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to find image's data");
 			return;
 		}

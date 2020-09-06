@@ -45,7 +45,6 @@ public class ToHomePage extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// If the user is not logged in (not present in session) redirect to the login
 		String loginpath = getServletContext() + "/index.html";
 		HttpSession session = request.getSession();
 		if (session.isNew() || session.getAttribute("user") == null) {
@@ -62,12 +61,10 @@ public class ToHomePage extends HttpServlet {
 				return;
 			}
 		} catch (SQLException e) {
-			// for debugging only e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to find albums");
 			return;
 		}
 
-		// Redirect to the Home page and add albums to the parameters
 		String path = "/WEB-INF/HomePage.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());

@@ -37,7 +37,6 @@ public class CommentDAO {
 	}
 
 	public void createComment(int userId, int imageId, String text) throws SQLException, BadCommentForImage {
-		// Check if text is null
 		if (text.isEmpty() || userId < 0 || imageId < 0)
 			throw new BadCommentForImage("Upload error");
 

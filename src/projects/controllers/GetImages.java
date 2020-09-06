@@ -49,7 +49,6 @@ public class GetImages extends HttpServlet {
 		int startIndex = 0;
 		int numberOfPages = 0;
 
-		// If the user is not logged in (not present in session) redirect to the login
 		String loginpath = getServletContext()+ "/index.html";
 		HttpSession session = request.getSession();
 		if (session.isNew() || session.getAttribute("user") == null) {
@@ -57,14 +56,12 @@ public class GetImages extends HttpServlet {
 			return;
 		}
 
-		// get and check params
 		Integer albumId = null;
 		Integer pageNumber = null;
 		try {
 			albumId = Integer.parseInt(request.getParameter("albumid"));
 			pageNumber = Integer.parseInt(request.getParameter("pageno"));
 		} catch (NumberFormatException | NullPointerException e) {
-			// only for debugging e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Incorrect param values");
 			return;
 		}
@@ -80,7 +77,6 @@ public class GetImages extends HttpServlet {
 				return;
 			}
 		} catch (SQLException e) {
-			//for debugging only e.printStackTrace();
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not possible to findImagesByAlbumId");
 			return;
@@ -113,5 +109,4 @@ public class GetImages extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
 }

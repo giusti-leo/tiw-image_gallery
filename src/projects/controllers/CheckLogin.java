@@ -3,7 +3,6 @@ package projects.controllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -18,9 +17,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import projects.beans.Album;
 import projects.beans.User;
-import projects.dao.AlbumDAO;
 import projects.dao.UserDAO;
 import projects.utils.ConnectionHandler;
 
@@ -46,33 +43,24 @@ public class CheckLogin extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// obtain and escape params
 		String usrn = null;
 		String pwd = null;
 		try {
 			usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
 			pwd = StringEscapeUtils.escapeJava(request.getParameter("pwd"));
 		} catch (NullPointerException e) {
-			// for debugging only e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing param values");
 			return;
 		}
 
-		// database's query to authenticate for user
 		UserDAO userDao = new UserDAO(connection);
 		User user = null;
-		ArrayList<Album> albums = null;
-		AlbumDAO albumDAO = new AlbumDAO(connection);
 		try {
 			user = userDao.checkCredentials(usrn, pwd);
-			albums = albumDAO.findAlbum();
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Not Possible to check credentials");
 			return;
 		}
-
-		// If the user exists, add info to the session and go to home page, otherwise
-		// show login page with error message
 
 		String path;
 		if (user == null) {

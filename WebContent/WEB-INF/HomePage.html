@@ -7,28 +7,29 @@
 	href="../CSS/mystyle.css" th:href="@{/CSS/mystyle.css}" />
 </head>
 <body>
+	
 	<div align="right">
 		<a th:href="@{/Logout}">Logout</a>
 	</div>
+	
 	<h1>Welcome to the Gallery Home Page</h1>
-	<p
-		th:text="${'Welcome back ' + session.user.name + ' ' + session.user.surname}"></p>
+	<p th:text="${'Welcome back ' + session.user.name + ' ' + session.user.surname}"></p>
 
-	<table>
+	<table class="boxed">
 		<thead>
 			<tr>
-				<th>Album Title</th>
+				<th>Title</th>
 				<th>Date</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="a : ${albums}">
-			
-				<td><a th:href="@{/GetImages(albumid=${a.id},pageno=1)}" th:text="${a.title}"></a></td>
+				<td>
+					<a th:href="@{/GetImages(albumid=${a.id},pageno=1)}" th:text="${a.title}"></a>
+				</td>
 				<td th:text="${a.date}"></td>
 			</tr>
 		</tbody>
 	</table>
-
 </body>
 </html>

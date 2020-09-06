@@ -7,17 +7,19 @@
 	href="../CSS/mystyle.css" th:href="@{/CSS/mystyle.css}" />
 </head>
 <body>
+
 	<div align="right">
 		<a href="Logout">Logout</a>
 	</div>
-	<table th:if="${!selected}">
+
+	<table th:if="${!selected}" class="boxed">
 		<tr>
 			<td>Thumbnail</td>
-			<td th:each="photos : ${images}"><a
-				th:href="@{/GetComments(imageid=${photos.id},pageno=1)}"> <img
-					th:src="@{${photos.directory}}"
-					width="40" height="40" />
-			</a></td>
+			<td th:each="photos : ${images}">
+				<a th:href="@{/GetComments(imageid=${photos.id},pageno=1)}">
+					<img th:src="@{${photos.directory}}" class="imageThumb"/>
+				</a>
+			</td>
 		</tr>
 		<tr>
 			<td>Title</td>
@@ -25,7 +27,7 @@
 		</tr>
 	</table>
 	
-	<table th:if="${selected}">
+	<table th:if="${selected}" class="boxed">
 		<tr>
 			<th>Title</th>
 			<th>Image</th>
@@ -34,9 +36,9 @@
 		</tr>
 		<tr>
 			<td th:text="${image.title }"></td>
-			<td><img
-				th:src="@{${image.directory}}"
-				width="400" height="400" /></td>
+			<td>
+				<img th:src="@{${image.directory}}" class="imageDetails"/>
+			</td>
 			<td th:text="${image.date}"></td>
 			<td th:text="${image.directory}"></td>
 		</tr>
@@ -48,8 +50,11 @@
 			<th>Comment</th>
 		</tr>
 		<tr th:each="l: ${listofcomments.keySet()}">
-			<td> <span th:text="${l.surname}"> </span> <span th:text="${l.name}"> </span></td>
-			<td th:text="${listofcomments.get(l)}"></td>
+			<td> 
+				<span th:text="${l.surname}" class="comment"> </span> 
+				<span th:text="${l.name}" class="comment"> </span>
+			</td>
+			<td th:text="${listofcomments.get(l)}" class="comment"></td>
 		</tr>
 	</table>
 
@@ -63,25 +68,29 @@
 			</fieldset>
 		</form>
 	</div>
-	<div th:if="${numberofpages gt pageno}" align="right">
+	
+	<div th:if="${numberofpages gt pageno}" id="divnext">
 		<form action="GetImages" method="GET">
-			<input type="hidden" name="albumid" th:value="${albumid}" /> <input
-				type="hidden" name="pageno" th:value="${pageno}+1" />
+			<input type="hidden" name="albumid" th:value="${albumid}" /> 
+			<input type="hidden" name="pageno" th:value="${pageno}+1" />
 			<button type="submit">NEXT</button>
 		</form>
 	</div>
-	<div th:if="${pageno }!=1" align="left">
+	
+	<div th:if="${pageno }!=1" id="divback">
 		<form action="GetImages" method="GET">
-			<input type="hidden" name="albumid" th:value="${albumid}" /> <input
-				type="hidden" name="pageno" th:value="${pageno}-1" />
+			<input type="hidden" name="albumid" th:value="${albumid}" /> 
+			<input type="hidden" name="pageno" th:value="${pageno}-1" />
 			<button type="submit">BACK</button>
 		</form>
 	</div>
-	<div align="center">
+	
+	<div id="tableBackHome">
 		<form action="HomePage" method="GET">
 			<button>BACK TO HOMEPAGE</button>
 		</form>
 	</div>
+	
 </body>
 </html>
 
